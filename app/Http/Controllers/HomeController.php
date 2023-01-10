@@ -7,15 +7,6 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -26,17 +17,10 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
     public function saveToken(Request $request)
     {
-        auth()->user()->update(['device_token'=>$request->token]);
         return response()->json(['token saved successfully.']);
     }
-
     /**
      * Write code on Method
      *
@@ -44,15 +28,14 @@ class HomeController extends Controller
      */
     public function sendNotification(Request $request)
     {
-        $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
-
-        $SERVER_API_KEY = 'AAAAyzXj8Ts:APA91bH4tymiYFKKZsCvAAMThBRSHmZcVGWdyHbLVndmCoq5KeGSGvQL73yot32D3gLML2MtszTh1okBDdSj21z70qRWTwqyBSzjVPmSx7WYx508UvX3FToT0KZI34kmC8fQfViwGih4';
+        $firebaseToken = 'cmLb6pfO8N3nAaG827NJUi:APA91bFvKxORZAfXCxILULhlEaoRsqOz7ybUy3BuigZFnL8HzSMXG8TgfnKIBp6Iw1Vq6WM6DuNo0ne-x6lGWusdwhBiuE5pZLBoU4KScZHoDfKtqTXYYl0BUwd-5CmnxktDHY6XdlTn';
+        $serverKey = 'AAAAQgNwwyo:APA91bGc7djKoInA2ECVswbH085r_MjMx0S-36OQvsKSAUvY_0NbZNdLpZ4xsQUkl-Dm6GiJsVpFxBEZMEmZZBu_4wNjfdQBHxoP8MX6-S7jL8L_lAJuUmaE2UoDXJSN10QcTfuD1aYp';
 
         $data = [
-            "registration_ids" => $firebaseToken,
+            "registration_ids" => [ $firebaseToken ],
             "notification" => [
-                "title" => $request->title,
-                "body" => $request->body,
+                "title" => '12313123',
+                "body" => '12312312312321',
                 "content_available" => true,
                 "priority" => "high",
             ]
@@ -60,7 +43,7 @@ class HomeController extends Controller
         $dataString = json_encode($data);
 
         $headers = [
-            'Authorization: key=' . $SERVER_API_KEY,
+            'Authorization: key=' . $serverKey,
             'Content-Type: application/json',
         ];
 
@@ -74,7 +57,6 @@ class HomeController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
         $response = curl_exec($ch);
-
         dd($response);
     }
 }
