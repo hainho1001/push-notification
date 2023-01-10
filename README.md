@@ -1,6 +1,5 @@
 ## Installation
 
-cd push-notification
 - `git clone https://github.com/hainho1001/push-notification.git`
 - `cd push-notification`
 - `composer install`
